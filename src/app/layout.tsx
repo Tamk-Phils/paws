@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PawsomeBreed | Adopt. Rescue. Love.",
-  description: "Connecting families with incredible puppies from trusted individuals and rescues across the US.",
+  description: "Connecting families with incredible puppies from trusted individuals and rescues.",
 };
 
 export default function RootLayout({

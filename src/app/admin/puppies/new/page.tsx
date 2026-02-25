@@ -19,12 +19,14 @@ export default function AddPuppy() {
         color: '',
         size: '',
         adoption_fee: '',
+        deposit_amount: '150',
         city: '',
         state: '',
         description: '',
         health_verified: false,
         vaccinations_up_to_date: false,
         microchipped: false,
+        lister_name: '',
     });
 
     const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -145,6 +147,11 @@ export default function AddPuppy() {
                         </div>
 
                         <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Lister Name (Admin Label) *</label>
+                            <input required type="text" name="lister_name" value={formData.lister_name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. Happy Paws" />
+                        </div>
+
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Age (in months) *</label>
                             <input required type="number" name="age" value={formData.age} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 3" min="1" />
                         </div>
@@ -189,9 +196,14 @@ export default function AddPuppy() {
                             <input required type="text" name="state" value={formData.state} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. TX" />
                         </div>
 
-                        <div className="md:col-span-2">
+                        <div className="md:col-span-1">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Adoption Fee (USD) *</label>
                             <input required type="number" name="adoption_fee" value={formData.adoption_fee} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 500" min="0" />
+                        </div>
+
+                        <div className="md:col-span-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Initial Deposit (USD) *</label>
+                            <input required type="number" name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 150" min="0" />
                         </div>
 
                         <div className="md:col-span-2 mt-4">

@@ -23,6 +23,7 @@ export default function EditPuppy() {
         color: '',
         size: '',
         adoption_fee: '',
+        deposit_amount: '',
         city: '',
         state: '',
         description: '',
@@ -68,6 +69,7 @@ export default function EditPuppy() {
                     color: data.color || '',
                     size: data.size || '',
                     adoption_fee: data.adoption_fee?.toString() || '',
+                    deposit_amount: data.deposit_amount?.toString() || '150',
                     city: data.city || '',
                     state: data.state || '',
                     description: data.description || '',
@@ -245,9 +247,14 @@ export default function EditPuppy() {
                             <input required type="text" name="state" value={formData.state} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. TX" />
                         </div>
 
-                        <div className="md:col-span-2">
+                        <div className="md:col-span-1">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Adoption Fee (USD) *</label>
                             <input required type="number" name="adoption_fee" value={formData.adoption_fee} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 500" min="0" />
+                        </div>
+
+                        <div className="md:col-span-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Initial Deposit (USD) *</label>
+                            <input required type="number" name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 150" min="0" />
                         </div>
 
                         <div className="md:col-span-2 mt-4">

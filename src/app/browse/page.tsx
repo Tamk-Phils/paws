@@ -150,9 +150,6 @@ export default function BrowsePuppies() {
                                                 alt={puppy.name}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
-                                            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-gray-900 shadow-sm">
-                                                ${puppy.adoption_fee}
-                                            </div>
                                         </div>
                                         <div className="p-5 flex-grow flex flex-col">
                                             <div className="flex justify-between items-start mb-1">
@@ -163,10 +160,7 @@ export default function BrowsePuppies() {
                                             </div>
                                             <p className="text-[var(--color-primary)] font-medium text-sm mb-3">{puppy.breed}</p>
 
-                                            <div className="flex items-center text-gray-500 text-sm mb-4">
-                                                <MapPin className="w-4 h-4 mr-1 shrink-0" />
-                                                <span className="truncate">{puppy.city}, {puppy.state}</span>
-                                            </div>
+
 
                                             <div className="mt-auto pt-4 border-t border-gray-100 flex gap-2">
                                                 <Link

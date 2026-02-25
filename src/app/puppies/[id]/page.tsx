@@ -46,7 +46,6 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
         fencedYard: false,
         // Section 5
         applicationType: 'Adopt',
-        preferredAge: '',
         preferredSize: '',
         openToSpecialNeeds: false,
         // Section 6
@@ -85,6 +84,24 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
             };
         }
     }, [id]);
+
+    // Auth Redirect Persistence
+    useEffect(() => {
+        const savedForm = localStorage.getItem(`adoption_form_${id}`);
+        if (savedForm) {
+            try {
+                setFormData(JSON.parse(savedForm));
+                // Clear after loading
+                localStorage.removeItem(`adoption_form_${id}`);
+                // Open modal if we just came back from login
+                if (authUser) {
+                    setIsModalOpen(true);
+                }
+            } catch (e) {
+                console.error('Failed to load saved form', e);
+            }
+        }
+    }, [id, authUser]);
 
     async function fetchPuppyData() {
         const { data, error } = await supabase
@@ -135,7 +152,10 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            alert('Please sign in to submit an adoption application.');
+            // Save form data to localStorage
+            localStorage.setItem(`adoption_form_${id}`, JSON.stringify(formData));
+            alert('Please sign in to submit an adoption application. Your form data has been saved.');
+            router.push(`/login?redirect=/puppies/${id}`);
             setSubmitting(false);
             return;
         }
@@ -167,7 +187,6 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
             fenced_yard: formData.fencedYard,
             // Sec 5
             application_type: formData.applicationType,
-            preferred_age: formData.preferredAge,
             preferred_size: formData.preferredSize,
             open_to_special_needs: formData.openToSpecialNeeds,
             // Sec 6
@@ -292,9 +311,8 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
                             <div className="flex justify-between items-start mb-4">
                                 <div>
                                     <h1 className="text-4xl font-extrabold text-gray-900">{puppy.name}</h1>
-                                    <p className="text-gray-500 mt-1">Listed by: {puppy.profiles?.full_name || 'Anonymous'}</p>
+                                    <p className="text-gray-500 mt-1">Listed by: {puppy.lister_name || puppy.profiles?.full_name || 'Anonymous'}</p>
                                 </div>
-                                <p className="text-3xl font-bold text-[var(--color-primary)]">${puppy.adoption_fee}</p>
                             </div>
 
                             <div className="flex flex-wrap gap-2 mb-8">
@@ -308,10 +326,6 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
                                 </span>
                                 <span className="inline-flex items-center text-sm font-medium bg-[var(--color-secondary)] text-gray-700 px-3 py-1.5 rounded-lg">
                                     {puppy.gender === 'Male' ? '♂️' : '♀️'} {puppy.gender}
-                                </span>
-                                <span className="inline-flex items-center text-sm font-medium bg-[var(--color-secondary)] text-gray-700 px-3 py-1.5 rounded-lg">
-                                    <MapPin className="w-4 h-4 mr-1.5 text-gray-500" />
-                                    {puppy.city}, {puppy.state}
                                 </span>
                             </div>
 
@@ -575,6 +589,14 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
                                     <div className="space-y-4">
                                         <h3 className="text-lg font-bold border-b pb-2">Section 5: Preferences</h3>
                                         <div>
+                                            <h4 className="text-sm font-bold text-amber-800 mb-2">Notice Regarding Initial Deposit</h4>
+                                            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
+                                                <p className="text-xs text-amber-700 leading-relaxed">
+                                                    If your application is approved, a non-refundable deposit of **${puppy?.deposit_amount || 150}** will be required to secure your chosen puppy. This ensures serious commitment and helps cover administrative costs. The deposit will be deducted from the final adoption fee.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Are you applying to:</label>
                                             <select value={formData.applicationType} onChange={e => setFormData({ ...formData, applicationType: e.target.value })} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white text-black">
                                                 <option>Adopt</option>
@@ -582,11 +604,7 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
                                                 <option>Rescue Volunteer</option>
                                             </select>
                                         </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Dog Age</label>
-                                                <input required type="text" value={formData.preferredAge} onChange={e => setFormData({ ...formData, preferredAge: e.target.value })} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-[var(--color-primary)] outline-none text-black" placeholder="e.g., Puppy, Adult, 1-3 years" />
-                                            </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Dog Size/Breed</label>
                                                 <input required type="text" value={formData.preferredSize} onChange={e => setFormData({ ...formData, preferredSize: e.target.value })} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-[var(--color-primary)] outline-none text-black" placeholder="e.g., Medium, Boxer" />

@@ -6,7 +6,7 @@ const steps = [
         icon: Search,
         step: '01',
         title: 'Browse Listings',
-        description: 'Search through hundreds of verified puppy listings from trusted individuals and rescue organizations across the US. Filter by breed, age, location, and more.',
+        description: 'Search through hundreds of verified puppy listings from trusted individuals and rescue organizations. Filter by breed, age, and more.',
         color: 'bg-amber-50 text-amber-600 border-amber-200',
     },
     {
@@ -112,7 +112,7 @@ export default function HowItWorksPage() {
             <section className="bg-black text-white py-24">
                 <div className="max-w-3xl mx-auto px-4 text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to find your perfect companion?</h2>
-                    <p className="text-gray-400 mb-10 text-lg">Browse hundreds of available puppies from trusted listers across the US.</p>
+                    <p className="text-gray-400 mb-10 text-lg">Browse hundreds of available puppies from trusted listers.</p>
                     <Link href="/browse" className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 inline-flex items-center gap-2">
                         Browse Puppies <ArrowRight className="w-5 h-5" />
                     </Link>

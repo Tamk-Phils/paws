@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Heart, PawPrint } from 'lucide-react';
 
 const team = [
-    { name: 'Emily Carter', role: 'Co-Founder & CEO', bio: 'Animal welfare advocate with 12+ years in rescue operations across the US.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Emily Carter', role: 'Co-Founder & CEO', bio: 'Animal welfare advocate with 12+ years in rescue operations.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&crop=face' },
     { name: 'Marcus Johnson', role: 'Head of Operations', bio: 'Believes every dog deserves a second chance. Built our vetting process from the ground up.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face' },
     { name: 'Priya Nair', role: 'Community Manager', bio: 'Dog mom to 3. Manages our network of trusted listers and ensures listing quality.', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face' },
 ];
@@ -44,7 +44,7 @@ export default function AboutPage() {
                             We built PawsomeBreed to fix a broken adoption process. Too many families struggled to find trustworthy listings. Too many dogs ended up with the wrong homes. We changed that by creating a platform that puts transparency, safety, and community at its core.
                         </p>
                         <p className="text-gray-500 leading-relaxed mb-8">
-                            Since our founding, we've facilitated thousands of successful adoptions across the US — from rescue organizations in rural Texas to individual breeders in New England.
+                            Since our founding, we've facilitated thousands of successful adoptions — from established rescue organizations to individual breeders dedicated to the health and happiness of their dogs.
                         </p>
                         <Link href="/browse" className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-8 py-3 rounded-full font-bold inline-flex items-center gap-2 transition-all duration-300">
                             Find Your Pup <ArrowRight className="w-5 h-5" />

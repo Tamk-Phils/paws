@@ -23,7 +23,7 @@ export default function Footer() {
                             <span className="font-bold text-xl tracking-tight">PawsomeBreed</span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                            Adopt. Rescue. Love. Connecting families with incredible puppies from trusted individuals and rescues across the US.
+                            Adopt. Rescue. Love. Connecting families with incredible puppies from trusted individuals and rescues.
                         </p>
                         <div className="flex gap-4">
                             <Link href="/" className="text-gray-400 hover:text-[var(--color-primary)] transition-colors">
@@ -127,8 +127,12 @@ export default function Footer() {
                     <p className="text-gray-500 text-sm text-center md:text-left">
                         &copy; {new Date().getFullYear()} PawsomeBreed. All rights reserved.
                     </p>
-                    <div className="mt-4 md:mt-0 flex space-x-6 text-sm text-gray-500">
-                        <span>Made with love in the US 🇺🇸</span>
+                    <div className="mt-4 md:mt-0 flex flex-col items-center md:items-end gap-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-2">
+                            <Mail className="w-4 h-4 text-[var(--color-primary)]" />
+                            <span>pawsomebreed18@gmail.com</span>
+                        </div>
+                        <span>Made with love</span>
                     </div>
                 </div>
             </div>

@@ -20,9 +20,9 @@ const HOW_IT_WORKS = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah M.', location: 'Austin, TX', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'Found our Boxer puppy Buddy here. The process was seamless and the support was incredible from start to finish!' },
-  { name: 'James K.', location: 'Denver, CO', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'Our Rottweiler Duke has been with us for 8 months. Best decision we ever made. Couldn\'t be happier.' },
-  { name: 'Priya N.', location: 'Chicago, IL', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'I was skeptical about adopting online but PawsomeBreed made it feel totally safe and transparent.' },
+  { name: 'Sarah M.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'Found our Boxer puppy Buddy here. The process was seamless and the support was incredible from start to finish!' },
+  { name: 'James K.', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'Our Rottweiler Duke has been with us for 8 months. Best decision we ever made. Couldn\'t be happier.' },
+  { name: 'Priya N.', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', rating: 5, text: 'I was skeptical about adopting online but PawsomeBreed made it feel totally safe and transparent.' },
 ];
 
 export default function Home() {
@@ -66,7 +66,7 @@ export default function Home() {
       .select('*', { count: 'exact', head: true });
 
     setStats({
-      happyFamilies: familiesCount || 0,
+      happyFamilies: (familiesCount || 0) + 100,
       totalPuppies: puppiesCount || 0,
     });
 
@@ -92,7 +92,7 @@ export default function Home() {
             Adopt. Rescue. <span className="text-[var(--color-primary)]">Love.</span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-300 mb-10 text-balance">
-            Connect with trusted individuals and rescues across the US to find your perfect furry companion. Every dog deserves a loving home.
+            Connect with trusted individuals and rescues to find your perfect furry companion. Every dog deserves a loving home.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
@@ -146,15 +146,14 @@ export default function Home() {
             /* Placeholder cards when no puppies in DB */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { name: 'Buddy', breed: 'Boxer', age: '3 mo', fee: '450', city: 'Austin, TX', photo: 'https://images.unsplash.com/photo-1558349699-1e1c38c05eeb?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
-                { name: 'Luna', breed: 'Rottweiler', age: '2 mo', fee: '800', city: 'Denver, CO', photo: 'https://images.unsplash.com/photo-1673474025690-eacc81e21daa?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
-                { name: 'Max', breed: 'Boxer', age: '4 mo', fee: '300', city: 'Chicago, IL', photo: 'https://images.unsplash.com/photo-1593620659530-7f98c53de278?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
-                { name: 'Bella', breed: 'Rottweiler', age: '5 mo', fee: '350', city: 'Miami, FL', photo: 'https://images.unsplash.com/photo-1644562855511-2081ea3ad3c7?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
+                { name: 'Buddy', breed: 'Boxer', age: '3 mo', photo: 'https://images.unsplash.com/photo-1558349699-1e1c38c05eeb?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
+                { name: 'Luna', breed: 'Rottweiler', age: '2 mo', photo: 'https://images.unsplash.com/photo-1673474025690-eacc81e21daa?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
+                { name: 'Max', breed: 'Boxer', age: '4 mo', photo: 'https://images.unsplash.com/photo-1593620659530-7f98c53de278?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
+                { name: 'Bella', breed: 'Rottweiler', age: '5 mo', photo: 'https://images.unsplash.com/photo-1644562855511-2081ea3ad3c7?fm=jpg&q=60&w=1000&auto=format&fit=crop' },
               ].map((puppy) => (
                 <div key={puppy.name} className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 flex flex-col group">
                   <div className="relative h-64 overflow-hidden bg-gray-200">
                     <img src={puppy.photo} alt={puppy.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-800 shadow-sm">${puppy.fee}</div>
                   </div>
                   <div className="p-5 flex-grow flex flex-col">
                     <div className="flex justify-between items-start mb-1">
@@ -162,8 +161,7 @@ export default function Home() {
                       <span className="text-sm font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">{puppy.age}</span>
                     </div>
                     <p className="text-gray-500 text-sm mb-4">{puppy.breed}</p>
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-sm text-gray-500 flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{puppy.city}</span>
+                    <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-end">
                       <Link href="/browse" className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">Adopt</Link>
                     </div>
                   </div>
@@ -178,7 +176,6 @@ export default function Home() {
                   <div key={puppy.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col group cursor-pointer">
                     <div className="relative h-64 overflow-hidden bg-gray-200">
                       <img src={imageUrl} alt={puppy.name} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-800 shadow-sm">${puppy.adoption_fee}</div>
                     </div>
                     <div className="p-6 flex-grow flex flex-col">
                       <div className="flex justify-between items-start mb-2">
@@ -186,8 +183,7 @@ export default function Home() {
                         <span className="text-sm font-medium bg-[var(--color-secondary)] text-gray-600 px-2 py-1 rounded">{puppy.age} mo</span>
                       </div>
                       <p className="text-gray-500 mb-4 text-sm">{puppy.breed} • {puppy.gender}</p>
-                      <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span className="text-sm text-gray-500 font-medium flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{puppy.city}, {puppy.state}</span>
+                      <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-end">
                         <Link href={`/puppies/${puppy.id}`} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm shrink-0">Adopt</Link>
                       </div>
                     </div>
@@ -320,7 +316,6 @@ export default function Home() {
                   <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
                   <div>
                     <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.location}</p>
                   </div>
                 </div>
               </div>
