@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
+import { adminSupabase } from '@/lib/supabaseClient';
 import { ArrowLeft, Loader2, ImagePlus } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,6 +30,7 @@ export default function EditPuppy() {
         health_verified: false,
         vaccinations_up_to_date: false,
         microchipped: false,
+        lister_name: '',
     });
 
     const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
@@ -54,7 +55,7 @@ export default function EditPuppy() {
         if (!puppyId) return;
 
         async function fetchPuppy() {
-            const { data, error } = await supabase
+            const { data, error } = await adminSupabase
                 .from('puppies')
                 .select('*, puppy_images(image_url)')
                 .eq('id', puppyId)
@@ -76,6 +77,7 @@ export default function EditPuppy() {
                     health_verified: data.health_verified || false,
                     vaccinations_up_to_date: data.vaccinations_up_to_date || false,
                     microchipped: data.microchipped || false,
+                    lister_name: data.lister_name || '',
                 });
                 if (data.puppy_images && data.puppy_images.length > 0) {
                     setExistingImageUrls(data.puppy_images.map((img: any) => img.image_url));
@@ -104,11 +106,17 @@ export default function EditPuppy() {
         setError(null);
 
         try {
+            // Validate session
+            const { data: { session }, error: authError } = await adminSupabase.auth.getSession();
+            if (authError || !session?.user) {
+                throw new Error('You must be signed in as an admin to edit a puppy.');
+            }
+
             const updatePayload = {
                 ...formData,
             };
 
-            const { error: updateError } = await supabase
+            const { error: updateError } = await adminSupabase
                 .from('puppies')
                 .update(updatePayload)
                 .eq('id', puppyId);
@@ -116,7 +124,7 @@ export default function EditPuppy() {
             if (updateError) throw updateError;
 
             // Handle Images
-            await supabase.from('puppy_images').delete().eq('puppy_id', puppyId);
+            await adminSupabase.from('puppy_images').delete().eq('puppy_id', puppyId);
 
             let allUrls = [...existingImageUrls];
 
@@ -126,12 +134,12 @@ export default function EditPuppy() {
                     const file = newImageFiles[i];
                     const fileName = `${puppyId}/${Date.now()}_${file.name}`;
 
-                    const { error: uploadError } = await supabase.storage
+                    const { error: uploadError } = await adminSupabase.storage
                         .from('puppy_images')
                         .upload(fileName, file);
 
                     if (!uploadError) {
-                        const { data: publicUrlData } = supabase.storage
+                        const { data: publicUrlData } = adminSupabase.storage
                             .from('puppy_images')
                             .getPublicUrl(fileName);
 
@@ -147,7 +155,10 @@ export default function EditPuppy() {
                     image_url: url.trim(),
                     is_primary: i === 0
                 }));
-                await supabase.from('puppy_images').insert(imagePayloads);
+                const { error: imageInsertError } = await adminSupabase.from('puppy_images').insert(imagePayloads);
+                if (imageInsertError) {
+                    console.error('Error inserting image URLs:', imageInsertError);
+                }
             }
 
             router.push('/admin/puppies');
@@ -205,6 +216,11 @@ export default function EditPuppy() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Age (in months) *</label>
                             <input required type="number" name="age" value={formData.age} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. 3" min="1" />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Lister Name (Admin Label) *</label>
+                            <input required type="text" name="lister_name" value={formData.lister_name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] text-black" placeholder="e.g. Happy Paws" />
                         </div>
 
                         <div>

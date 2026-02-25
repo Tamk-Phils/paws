@@ -149,9 +149,7 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
         e.preventDefault();
         setSubmitting(true);
 
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
+        if (!authUser) {
             // Save form data to localStorage
             localStorage.setItem(`adoption_form_${id}`, JSON.stringify(formData));
             alert('Please sign in to submit an adoption application. Your form data has been saved.');
@@ -159,6 +157,8 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
             setSubmitting(false);
             return;
         }
+
+        const user = authUser;
 
         const { error } = await supabase.from('adoption_requests').insert({
             puppy_id: puppy.id,

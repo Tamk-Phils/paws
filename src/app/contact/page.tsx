@@ -15,32 +15,11 @@ export default function ContactPage() {
         setLoading(true);
         setError(null);
 
-        try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-
-            let data;
-            const contentType = res.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                data = await res.json();
-            } else {
-                const text = await res.text();
-                throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}`);
-            }
-
-            if (res.ok) {
-                setSent(true);
-            } else {
-                throw new Error(data.error || 'Failed to send message');
-            }
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
+        // Mock submission success as requested
+        setTimeout(() => {
+            setSent(true);
             setLoading(false);
-        }
+        }, 800);
     };
 
     return (

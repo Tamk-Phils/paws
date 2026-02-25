@@ -76,6 +76,8 @@ CREATE TABLE public.puppies (
     vaccinations_up_to_date BOOLEAN DEFAULT false,
     microchipped            BOOLEAN DEFAULT false,
     status                  TEXT DEFAULT 'available' CHECK (status IN ('available', 'pending', 'adopted')),
+    lister_name             TEXT,
+    deposit_amount          NUMERIC DEFAULT 150,
     created_at              TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
 );
 

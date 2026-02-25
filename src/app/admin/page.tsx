@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Users, Dog, Inbox, Activity, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
+import { adminSupabase } from '@/lib/supabaseClient';
 
 export default function AdminOverview() {
     const [stats, setStats] = useState({
@@ -18,7 +18,7 @@ export default function AdminOverview() {
     useEffect(() => {
         fetchData();
 
-        const channel = supabase
+        const channel = adminSupabase
             .channel('admin:overview')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'puppies' }, () => fetchData())
             .on('postgres_changes', { event: '*', schema: 'public', table: 'adoption_requests' }, () => fetchData())
@@ -26,15 +26,15 @@ export default function AdminOverview() {
             .subscribe();
 
         return () => {
-            supabase.removeChannel(channel);
+            adminSupabase.removeChannel(channel);
         };
     }, []);
 
     async function fetchData() {
         // Fetch stats
-        const { count: puppiesCount } = await supabase.from('puppies').select('*', { count: 'exact', head: true });
-        const { count: pendingCount } = await supabase.from('adoption_requests').select('*', { count: 'exact', head: true }).eq('status', 'pending');
-        const { count: usersCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+        const { count: puppiesCount } = await adminSupabase.from('puppies').select('*', { count: 'exact', head: true });
+        const { count: pendingCount } = await adminSupabase.from('adoption_requests').select('*', { count: 'exact', head: true }).eq('status', 'pending');
+        const { count: usersCount } = await adminSupabase.from('profiles').select('*', { count: 'exact', head: true });
 
         // For chats, since it's mock in our DB, we'll just set it to 0 or a placeholder.
         const chatsCount = 0;
@@ -47,7 +47,7 @@ export default function AdminOverview() {
         });
 
         // Fetch recent requests
-        const { data: requests } = await supabase
+        const { data: requests } = await adminSupabase
             .from('adoption_requests')
             .select(`
                 *,

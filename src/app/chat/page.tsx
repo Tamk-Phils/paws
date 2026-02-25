@@ -14,6 +14,7 @@ export default function UserChat() {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [sending, setSending] = useState(false);
+    const [status, setStatus] = useState<'connecting' | 'connected' | 'error'>('connecting');
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -23,12 +24,14 @@ export default function UserChat() {
                 return;
             }
             setUser(session.user);
-            initConversation(session.user.id);
+            initConversation(session);
         });
     }, []);
 
     useEffect(() => {
         if (!conversationId) return;
+
+        console.log('Subscribing to channel for conversation:', conversationId);
         const channel = supabase
             .channel(`messages:${conversationId}`)
             .on('postgres_changes', {
@@ -39,24 +42,33 @@ export default function UserChat() {
             }, (payload) => {
                 setMessages((prev) => [...prev, payload.new]);
             })
-            .subscribe();
-        return () => { supabase.removeChannel(channel); };
+            .on('system', { event: 'subscribe' }, (status) => {
+                console.log('Realtime Status:', status);
+                if (status === 'SUBSCRIBED') setStatus('connected');
+                if (status === 'CHANNEL_ERROR') setStatus('error');
+            })
+            .subscribe((status) => {
+                if (status === 'TIMED_OUT') setStatus('error');
+            });
+
+        return () => {
+            console.log('Removing channel:', conversationId);
+            supabase.removeChannel(channel);
+        };
     }, [conversationId]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    async function initConversation(userId: string) {
-        // Ensure the profile row exists (may have been dropped by a schema reset)
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-            await supabase.from('profiles').upsert({
-                id: userId,
-                email: session.user.email,
-                full_name: session.user.user_metadata?.full_name || null,
-            }, { onConflict: 'id', ignoreDuplicates: true });
-        }
+    async function initConversation(session: any) {
+        const userId = session.user.id;
+        // Ensure the profile row exists
+        await supabase.from('profiles').upsert({
+            id: userId,
+            email: session.user.email,
+            full_name: session.user.user_metadata?.full_name || null,
+        }, { onConflict: 'id', ignoreDuplicates: true });
 
         // Find or create a conversation — use maybeSingle() to avoid 406 on zero rows
         let { data: existing } = await supabase

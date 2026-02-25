@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import { ArrowLeft, Loader2, ImagePlus } from 'lucide-react';
+import { adminSupabase } from '@/lib/supabaseClient';
+import { ArrowLeft, Loader2, ImagePlus, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AddPuppy() {
@@ -57,18 +57,29 @@ export default function AddPuppy() {
         setError(null);
 
         try {
-            // Very simple insert - this assumes you're logged in as an admin or RLS allows insert
-            const { data: user } = await supabase.auth.getUser();
+            // Use adminSupabase to check authorization and perform operations
+            const { data: { session }, error: authError } = await adminSupabase.auth.getSession();
+
+            if (authError || !session?.user) {
+                throw new Error('You must be signed in as an admin to add a puppy.');
+            }
 
             const newPuppy = {
                 ...formData,
-                lister_id: user?.user?.id || null, // Best effort if no user is signed in yet
+                lister_id: session.user.id,
                 status: 'available'
             };
 
-            const { data: puppyData, error: insertError } = await supabase.from('puppies').insert([newPuppy]).select().single();
+            const { data: puppyData, error: insertError } = await adminSupabase
+                .from('puppies')
+                .insert([newPuppy])
+                .select()
+                .single();
 
-            if (insertError) throw insertError;
+            if (insertError) {
+                console.error('Insert Error:', insertError);
+                throw new Error(`Database Error: ${insertError.message}`);
+            }
 
             // Upload Images to Storage and insert into table
             if (imageFiles.length > 0) {
@@ -77,7 +88,7 @@ export default function AddPuppy() {
                     const file = imageFiles[i];
                     const fileName = `${puppyData.id}/${Date.now()}_${file.name}`;
 
-                    const { data: uploadData, error: uploadError } = await supabase.storage
+                    const { error: uploadError } = await adminSupabase.storage
                         .from('puppy_images')
                         .upload(fileName, file);
 
@@ -86,7 +97,7 @@ export default function AddPuppy() {
                         continue;
                     }
 
-                    const { data: publicUrlData } = supabase.storage
+                    const { data: publicUrlData } = adminSupabase.storage
                         .from('puppy_images')
                         .getPublicUrl(fileName);
 
@@ -98,13 +109,19 @@ export default function AddPuppy() {
                 }
 
                 if (imagePayloads.length > 0) {
-                    await supabase.from('puppy_images').insert(imagePayloads);
+                    const { error: imageInsertError } = await adminSupabase
+                        .from('puppy_images')
+                        .insert(imagePayloads);
+
+                    if (imageInsertError) {
+                        console.error('Error inserting image URLs:', imageInsertError);
+                    }
                 }
             }
 
             router.push('/admin/puppies');
         } catch (err: any) {
-            console.error('Error adding puppy:', err);
+            console.error('Detailed Error adding puppy:', err);
             setError(err.message || 'Failed to add puppy.');
             setLoading(false);
         }

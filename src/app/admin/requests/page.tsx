@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Filter, CheckCircle2, XCircle, MessageSquare, Loader2, Trash2, Clock, MapPin, Phone, User, ExternalLink, DollarSign } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
+import { adminSupabase } from '@/lib/supabaseClient';
 
 export default function AdoptionRequests() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +14,7 @@ export default function AdoptionRequests() {
     useEffect(() => {
         fetchRequests();
 
-        const channel = supabase
+        const channel = adminSupabase
             .channel('admin:manage-requests')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'adoption_requests' }, () => {
                 fetchRequests();
@@ -22,12 +22,12 @@ export default function AdoptionRequests() {
             .subscribe();
 
         return () => {
-            supabase.removeChannel(channel);
+            adminSupabase.removeChannel(channel);
         };
     }, []);
 
     async function fetchRequests() {
-        const { data, error } = await supabase
+        const { data, error } = await adminSupabase
             .from('adoption_requests')
             .select(`
     *,
@@ -50,7 +50,7 @@ export default function AdoptionRequests() {
 
     const handleUpdateStatus = async (id: string, newStatus: string, reqContext: any) => {
         if (newStatus === 'rejected') {
-            await supabase.from('adoption_requests').update({ status: 'rejected' }).eq('id', id);
+            await adminSupabase.from('adoption_requests').update({ status: 'rejected' }).eq('id', id);
             fetchRequests(); // Re-fetch to update UI
         } else if (newStatus === 'approved') {
             // Open the deposit modal instead of direct approval
@@ -62,7 +62,7 @@ export default function AdoptionRequests() {
 
     const handleDeleteRequest = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this adoption request? This action cannot be undone.')) {
-            const { error } = await supabase.from('adoption_requests').delete().eq('id', id);
+            const { error } = await adminSupabase.from('adoption_requests').delete().eq('id', id);
             if (error) {
                 console.error('Error deleting request:', error);
                 // Optionally show a toast notification
@@ -76,31 +76,39 @@ export default function AdoptionRequests() {
     const confirmApproval = async () => {
         if (!selectedRequest) return;
 
-        // 1. Update Request with status and deposit
-        await supabase.from('adoption_requests').update({
-            status: 'approved',
-            deposit_amount: depositAmount,
-            deposit_paid: false
-        }).eq('id', selectedRequest.id);
+        try {
+            // 1. Update Request with status and deposit
+            const { error: reqError } = await adminSupabase.from('adoption_requests').update({
+                status: 'approved',
+                deposit_amount: depositAmount,
+                deposit_paid: false
+            }).eq('id', selectedRequest.id);
+            if (reqError) throw reqError;
 
-        // 2. Mark puppy as pending (or adopted based on business logic)
-        if (selectedRequest.puppyId) {
-            await supabase.from('puppies').update({ status: 'pending' }).eq('id', selectedRequest.puppyId);
+            // 2. Mark puppy as pending
+            if (selectedRequest.puppyId) {
+                const { error: puppyError } = await adminSupabase.from('puppies').update({ status: 'pending' }).eq('id', selectedRequest.puppyId);
+                if (puppyError) throw puppyError;
+            }
+
+            // 3. Send Notification
+            if (selectedRequest.userId) {
+                const { error: notifError } = await adminSupabase.from('notifications').insert({
+                    user_id: selectedRequest.userId,
+                    title: '🎉 Application Approved!',
+                    message: `Your application was approved! Please pay the $${depositAmount} deposit to secure your puppy.`,
+                    type: 'success'
+                });
+                if (notifError) throw notifError;
+            }
+
+            setDepositModalOpen(false);
+            setSelectedRequest(null);
+            fetchRequests(); // Re-fetch to update UI
+        } catch (err: any) {
+            console.error('Error approving request:', err);
+            alert(`Failed to approve: ${err.message}`);
         }
-
-        // 3. Send Notification with deposit info
-        if (selectedRequest.userId) {
-            await supabase.from('notifications').insert({
-                user_id: selectedRequest.userId,
-                title: '🎉 Application Approved!',
-                message: `Your application was approved! Please pay the $${depositAmount} deposit to secure your puppy.`,
-                type: 'success'
-            });
-        }
-
-        setDepositModalOpen(false);
-        setSelectedRequest(null);
-        fetchRequests(); // Re-fetch to update UI
     };
 
     // State to manage which request cards are expanded

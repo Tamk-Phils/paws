@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
+import { adminSupabase } from '@/lib/supabaseClient';
 
 export default function ManageUsers() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,7 +12,7 @@ export default function ManageUsers() {
     useEffect(() => {
         fetchUsers();
 
-        const channel = supabase
+        const channel = adminSupabase
             .channel('admin:manage-users')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
                 fetchUsers();
@@ -20,12 +20,12 @@ export default function ManageUsers() {
             .subscribe();
 
         return () => {
-            supabase.removeChannel(channel);
+            adminSupabase.removeChannel(channel);
         };
     }, []);
 
     async function fetchUsers() {
-        const { data, error } = await supabase
+        const { data, error } = await adminSupabase
             .from('profiles')
             .select('*')
             .order('created_at', { ascending: false });

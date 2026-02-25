@@ -66,10 +66,19 @@ CREATE TABLE IF NOT EXISTS public.puppies (
     vaccinations_up_to_date BOOLEAN DEFAULT false,
     microchipped            BOOLEAN DEFAULT false,
     status                  TEXT DEFAULT 'available' CHECK (status IN ('available', 'pending', 'adopted')),
-    lister_name             TEXT,
-    deposit_amount          NUMERIC DEFAULT 150,
     created_at              TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
 );
+
+-- Robustly add missing columns to puppies if they don't exist
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='puppies' AND column_name='lister_name') THEN
+        ALTER TABLE public.puppies ADD COLUMN lister_name TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='puppies' AND column_name='deposit_amount') THEN
+        ALTER TABLE public.puppies ADD COLUMN deposit_amount NUMERIC DEFAULT 150;
+    END IF;
+END $$;
 
 ALTER TABLE public.puppies ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Puppies viewable by everyone." ON public.puppies;
@@ -223,6 +232,7 @@ ALTER TABLE public.adoption_requests ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Adoption requests viewable by all." ON public.adoption_requests;
 DROP POLICY IF EXISTS "Anyone can insert adoption requests." ON public.adoption_requests;
 DROP POLICY IF EXISTS "Anyone can update adoption requests." ON public.adoption_requests;
+DROP POLICY IF EXISTS "Anyone can delete adoption requests." ON public.adoption_requests;
 
 CREATE POLICY "Adoption requests viewable by all." ON public.adoption_requests FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert adoption requests." ON public.adoption_requests FOR INSERT WITH CHECK (true);

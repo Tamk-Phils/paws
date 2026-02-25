@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Edit2, Trash2, MoreVertical, Loader2, Share2, Check } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
+import { adminSupabase } from '@/lib/supabaseClient';
 
 export default function ManagePuppies() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +14,7 @@ export default function ManagePuppies() {
     useEffect(() => {
         fetchPuppies();
 
-        const channel = supabase
+        const channel = adminSupabase
             .channel('admin:manage-puppies')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'puppies' }, () => {
                 fetchPuppies();
@@ -22,13 +22,12 @@ export default function ManagePuppies() {
             .subscribe();
 
         return () => {
-            supabase.removeChannel(channel);
+            adminSupabase.removeChannel(channel);
         };
     }, []);
 
     async function fetchPuppies() {
-        // Here we could filter by the admin's user_id, but for demonstration we'll grab all
-        const { data, error } = await supabase
+        const { data, error } = await adminSupabase
             .from('puppies')
             .select('*, puppy_images(image_url)')
             .order('created_at', { ascending: false });
@@ -156,7 +155,11 @@ export default function ManagePuppies() {
                                                     </Link>
                                                     <button onClick={async () => {
                                                         if (confirm('Are you sure you want to delete this puppy?')) {
-                                                            await supabase.from('puppies').delete().eq('id', puppy.id);
+                                                            const { error } = await adminSupabase.from('puppies').delete().eq('id', puppy.id);
+                                                            if (error) {
+                                                                console.error('Delete error:', error);
+                                                                alert(`Failed to delete: ${error.message}`);
+                                                            }
                                                         }
                                                     }} className="text-gray-400 hover:text-red-600 transition-colors flex items-center justify-center p-2 rounded-md hover:bg-red-50" title="Delete">
                                                         <Trash2 className="w-4 h-4" />
