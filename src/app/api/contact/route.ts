@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
     try {
+        if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 're_') {
+            return NextResponse.json({ error: 'Resend API Key is not configured. Please add your key to .env.local' }, { status: 500 });
+        }
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
         const { name, email, subject, message } = await req.json();
 
         if (!name || !email || !message) {
@@ -41,7 +44,7 @@ export async function POST(req: Request) {
 
         const { data, error } = await resend.emails.send({
             from: 'PawsomeBreed Contact <onboarding@resend.dev>',
-            to: 'pawsomebreed18@gmail.com',
+            to: process.env.CONTACT_RECEIVER_EMAIL || 'pawsomebreed18@mail.com',
             replyTo: email,
             subject: `PawsomeBreed Contact: ${subject || 'New Inquiry'}`,
             html: htmlContent,
