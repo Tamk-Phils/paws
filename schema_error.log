@@ -1,0 +1,10 @@
+npm WARN deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+npm ERR! path /home/philding/.npm/_npx/ef6cacd620a5e0ba/node_modules/supabase
+npm ERR! command failed
+npm ERR! signal SIGINT
+npm ERR! command sh -c node scripts/postinstall.js
+npm ERR! Downloading https://github.com/supabase/cli/releases/download/v2.76.14/supabase_2.76.14_checksums.txt
+npm ERR! Downloading https://github.com/supabase/cli/releases/download/v2.76.14/supabase_linux_amd64.tar.gz
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/philding/.npm/_logs/2026-02-24T10_20_27_649Z-debug-0.log
