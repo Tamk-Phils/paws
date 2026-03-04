@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | Ellie's Boxer & Rottweiler Sanctuary",
-    description: "Learn how we protect and handle your data at Ellie's Boxer & Rottweiler Sanctuary.",
+    title: "Privacy Policy | PawsomeBreed",
+    description: "Learn how we protect and handle your data at PawsomeBreed.",
 };
 
 export default function PrivacyPage() {

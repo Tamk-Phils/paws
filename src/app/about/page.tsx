@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, Heart, PawPrint } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: "About Us | Ellie's Boxer & Rottweiler Sanctuary",
+    title: "About Us | PawsomeBreed",
     description: "Learn about our mission, our team, and our commitment to connecting families with incredible Boxer and Rottweiler puppies.",
 };
 

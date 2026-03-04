@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Star, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: "Success Stories | Ellie's Boxer & Rottweiler Sanctuary",
-    description: "Read heartwarming stories from families who found their perfect Boxer or Rottweiler companion through our sanctuary.",
+    title: "Success Stories | PawsomeBreed",
+    description: "Read heartwarming stories from families who found their perfect Boxer or Rottweiler companion through PawsomeBreed.",
 };
 
 const stories = [
@@ -14,35 +14,35 @@ const stories = [
         puppy: 'Rex — Boxer',
         photo: 'https://images.unsplash.com/photo-1593620659530-7f98c53de278?fm=jpg&q=60&w=1200&auto=format&fit=crop',
         familyPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face',
-        quote: "Rex came into our lives at the perfect time. He has brought so much joy and love to our household. The adoption process through Ellie's Boxer & Rottweiler Sanctuary was seamless and we felt supported every step of the way.",
+        quote: "Rex came into our lives at the perfect time. He has brought so much joy and love to our household. The adoption process through PawsomeBreed was seamless and we felt supported every step of the way.",
         rating: 5,
     },
-{
-    family: 'Sarah & Mike',
+    {
+        family: 'Sarah & Mike',
         location: 'Denver, CO',
-            puppy: 'Luna — Rottweiler',
-                photo: 'https://images.unsplash.com/photo-1673474025690-eacc81e21daa?fm=jpg&q=60&w=1200&auto=format&fit=crop',
-                    familyPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
-                        quote: 'We had been looking for a Rottweiler for months. PawsomeBreed connected us with an amazing lister who was SO thorough in making sure we were the right fit. Luna is the best thing to happen to us!',
-                            rating: 5,
+        puppy: 'Luna — Rottweiler',
+        photo: 'https://images.unsplash.com/photo-1673474025690-eacc81e21daa?fm=jpg&q=60&w=1200&auto=format&fit=crop',
+        familyPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
+        quote: 'We had been looking for a Rottweiler for months. PawsomeBreed connected us with an amazing lister who was SO thorough in making sure we were the right fit. Luna is the best thing to happen to us!',
+        rating: 5,
     },
-{
-    family: 'The Patel Family',
+    {
+        family: 'The Patel Family',
         location: 'Chicago, IL',
-            puppy: 'Buddy — Boxer',
-                photo: 'https://images.unsplash.com/photo-1558349699-1e1c38c05eeb?fm=jpg&q=60&w=1200&auto=format&fit=crop',
-                    familyPhoto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
-                        quote: 'I was skeptical about adopting online but the vetting process and live chat with the lister made us feel completely at ease. Buddy has been part of our family for 6 months now and we could not be happier.',
-                            rating: 5,
+        puppy: 'Buddy — Boxer',
+        photo: 'https://images.unsplash.com/photo-1558349699-1e1c38c05eeb?fm=jpg&q=60&w=1200&auto=format&fit=crop',
+        familyPhoto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
+        quote: 'I was skeptical about adopting online but the vetting process and live chat with the lister made us feel completely at ease. Buddy has been part of our family for 6 months now and we could not be happier.',
+        rating: 5,
     },
-{
-    family: 'James R.',
+    {
+        family: 'James R.',
         location: 'Seattle, WA',
-            puppy: 'Duke — Rottweiler',
-                photo: 'https://images.unsplash.com/photo-1644562855511-2081ea3ad3c7?fm=jpg&q=60&w=1200&auto=format&fit=crop',
-                    familyPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
-                        quote: 'PawsomeBreed made the process feel personal. The live chat feature let me ask questions directly and the lister was incredibly responsive. Duke arrived healthy, happy and ready to play!',
-                            rating: 5,
+        puppy: 'Duke — Rottweiler',
+        photo: 'https://images.unsplash.com/photo-1644562855511-2081ea3ad3c7?fm=jpg&q=60&w=1200&auto=format&fit=crop',
+        familyPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
+        quote: 'PawsomeBreed made the process feel personal. The live chat feature let me ask questions directly and the lister was incredibly responsive. Duke arrived healthy, happy and ready to play!',
+        rating: 5,
     },
 ];
 

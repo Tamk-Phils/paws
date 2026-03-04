@@ -17,20 +17,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Ellie's Boxer & Rottweiler Sanctuary | Adopt. Rescue. Love.",
-    template: "%s | Ellie's Boxer & Rottweiler Sanctuary"
+    default: "PawsomeBreed | Adopt. Rescue. Love.",
+    template: "%s | PawsomeBreed"
   },
   description: "Connecting families with incredible Boxer and Rottweiler puppies from trusted individuals and rescues.",
-  keywords: ["Boxer", "Rottweiler", "puppy adoption", "dog rescue", "Ellie's Boxer & Rottweiler Sanctuary", "adopt a puppy"],
+  keywords: ["Boxer", "Rottweiler", "puppy adoption", "dog rescue", "PawsomeBreed", "adopt a puppy"],
   openGraph: {
-    title: "Ellie's Boxer & Rottweiler Sanctuary",
+    title: "PawsomeBreed",
     description: "Connecting families with incredible Boxer and Rottweiler puppies from trusted individuals and rescues.",
-    siteName: "Ellie's Boxer & Rottweiler Sanctuary",
+    siteName: "PawsomeBreed",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ellie's Boxer & Rottweiler Sanctuary",
+    title: "PawsomeBreed",
     description: "Connecting families with incredible Boxer and Rottweiler puppies.",
   }
 };
