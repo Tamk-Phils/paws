@@ -1,5 +1,11 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Heart, PawPrint } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: "About Us | Ellie's Bichon Frise Sanctuary",
+    description: "Learn about our mission, our team, and our commitment to connecting families with incredible Bichon Frise puppies.",
+};
 
 const team = [
     { name: 'Emily Carter', role: 'Co-Founder & CEO', bio: 'Animal welfare advocate with 12+ years in rescue operations.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&crop=face' },

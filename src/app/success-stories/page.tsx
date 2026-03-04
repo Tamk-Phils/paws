@@ -1,5 +1,11 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { Star, ArrowRight } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: "Success Stories | Ellie's Bichon Frise Sanctuary",
+    description: "Read heartwarming stories from families who found their perfect Bichon Frise companion through our sanctuary.",
+};
 
 const stories = [
     {

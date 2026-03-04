@@ -202,6 +202,18 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
 
         setSubmitting(false);
         if (!error) {
+            // Send Push Notification to Admins
+            fetch('/api/push/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    admin: true,
+                    title: '🐶 New Adoption Application!',
+                    message: `${formData.fullName} just applied for ${puppy.name}`,
+                    url: '/admin/requests'
+                })
+            }).catch(err => console.error('Push notify error:', err));
+
             setIsModalOpen(false);
             alert('Application submitted successfully! The admin will review it shortly.');
         } else {
@@ -592,7 +604,7 @@ export default function PuppyDetails({ params }: { params: Promise<{ id: string 
                                             <h4 className="text-sm font-bold text-amber-800 mb-2">Notice Regarding Initial Deposit</h4>
                                             <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
                                                 <p className="text-xs text-amber-700 leading-relaxed">
-                                                    If your application is approved, a non-refundable deposit of **${puppy?.deposit_amount || 150}** will be required to secure your chosen puppy. This ensures serious commitment and helps cover administrative costs. The deposit will be deducted from the final adoption fee.
+                                                    If your application is approved, a **refundable** deposit of **${puppy?.deposit_amount || 150}** will be required to secure your chosen puppy. This ensures serious commitment and helps cover administrative costs. The deposit will be deducted from the final adoption fee.
                                                 </p>
                                             </div>
                                         </div>

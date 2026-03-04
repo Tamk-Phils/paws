@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PushManager from "@/components/PushManager";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,8 +16,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PawsomeBreed | Adopt. Rescue. Love.",
-  description: "Connecting families with incredible puppies from trusted individuals and rescues.",
+  title: {
+    default: "Ellie's Bichon Frise Sanctuary | Adopt. Rescue. Love.",
+    template: "%s | Ellie's Bichon Frise Sanctuary"
+  },
+  description: "Connecting families with incredible Bichon Frise puppies from trusted individuals and rescues.",
+  keywords: ["Bichon Frise", "puppy adoption", "dog rescue", "Ellie's Bichon Frise Sanctuary", "adopt a puppy"],
+  openGraph: {
+    title: "Ellie's Bichon Frise Sanctuary",
+    description: "Connecting families with incredible Bichon Frise puppies from trusted individuals and rescues.",
+    siteName: "Ellie's Bichon Frise Sanctuary",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ellie's Bichon Frise Sanctuary",
+    description: "Connecting families with incredible Bichon Frise puppies.",
+  }
 };
 
 export default function RootLayout({
@@ -34,6 +50,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <PushManager />
       </body>
     </html>
   );

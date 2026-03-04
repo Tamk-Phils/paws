@@ -1,11 +1,19 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: "FAQ | Ellie's Bichon Frise Sanctuary",
+    description: "Frequently asked questions about adopting a Bichon Frise puppy, fees, and our process.",
+};
 
 const faqs = [
     {
         category: 'Adoption Process',
         items: [
-            { q: 'How do I adopt a puppy on PawsomeBreed?', a: 'Browse our listings, find a puppy you love, and click "Adopt". Fill in the adoption application form with your home details and experience with dogs. The lister will review your application and contact you via our chat feature.' },
+            {
+                q: "How do I adopt a puppy from Ellie's Bichon Frise Sanctuary?", a: 'Browse our listings, find a puppy you love, and click "Adopt". Fill in the adoption application form with your home details and experience with dogs. The lister will review your application and contact you via our chat feature.'
+            },
             { q: 'How long does the adoption process take?', a: 'It varies by lister. Typically, you\'ll hear back within 24–72 hours of submitting your application. Once approved, the final handoff timeline is agreed directly between you and the lister.' },
             { q: 'Can I adopt if I live in an apartment?', a: 'Yes! Many dogs thrive in apartments. Be transparent in your application about your living situation. Some listers may have breed-specific requirements, but many are open to apartment adopters.' },
             { q: 'Is there an adoption fee?', a: 'Each listing carries its own adoption fee set by the lister. This fee typically covers vaccinations, health checks, and microchipping. You can see the fee clearly on each listing page.' },

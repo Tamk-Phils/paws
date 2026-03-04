@@ -1,10 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Search, Loader2, MessageSquare } from 'lucide-react';
 import { adminSupabase } from '@/lib/supabaseClient';
 
 export default function ManageUsers() {
+    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -75,6 +78,7 @@ export default function ManageUsers() {
                                     <th className="px-6 py-4">User</th>
                                     <th className="px-6 py-4">Role</th>
                                     <th className="px-6 py-4">Joined On</th>
+                                    <th className="px-6 py-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 bg-white">
@@ -86,16 +90,20 @@ export default function ManageUsers() {
                                     </tr>
                                 ) : filteredUsers.map((user) => {
                                     return (
-                                        <tr key={user.id} className="hover:bg-gray-50/50 transition-colors">
+                                        <tr
+                                            key={user.id}
+                                            onClick={() => router.push(`/admin/chat?user=${user.id}`)}
+                                            className="hover:bg-gray-50/50 transition-colors cursor-pointer"
+                                        >
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div className="h-10 w-10 flex-shrink-0 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center font-bold text-gray-500">
                                                         {(user.full_name || user.email || '?').charAt(0).toUpperCase()}
                                                     </div>
-                                                    <div className="ml-4">
-                                                        <div className="font-bold text-gray-900">{user.full_name || 'Anonymous User'}</div>
+                                                    <Link href={`/admin/chat?user=${user.id}`} className="ml-4 hover:opacity-80 transition-opacity flex flex-col items-start text-left">
+                                                        <div className="font-bold text-gray-900 group-hover:text-[var(--color-primary)] transition-colors">{user.full_name || 'Anonymous User'}</div>
                                                         <div className="text-sm text-gray-500">{user.email || 'No email'}</div>
-                                                    </div>
+                                                    </Link>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -105,6 +113,14 @@ export default function ManageUsers() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {new Date(user.created_at).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <Link
+                                                    href={`/admin/chat?user=${user.id}`}
+                                                    className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] inline-flex items-center gap-1 bg-[var(--color-primary)]/5 px-3 py-1.5 rounded-lg transition-colors border border-[var(--color-primary)]/10"
+                                                >
+                                                    <MessageSquare className="w-4 h-4" /> Message
+                                                </Link>
                                             </td>
                                         </tr>
                                     );

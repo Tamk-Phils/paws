@@ -198,7 +198,7 @@ export default function DepositCheckout({ params }: { params: Promise<{ id: stri
                                 <span className="text-2xl font-bold text-[var(--color-primary)]">${request.deposit_amount}</span>
                             </div>
                             <p className="text-xs text-gray-500 mt-2">
-                                This deposit secures your adoption and is deducted from the total adoption fee. The remaining balance (${Number(request.puppies?.adoption_fee) - Number(request.deposit_amount)}) will be due upon pickup.
+                                This **refundable** deposit secures your adoption and is deducted from the total adoption fee. The remaining balance (${Number(request.puppies?.adoption_fee) - Number(request.deposit_amount)}) will be due upon pickup.
                             </p>
                         </div>
                     </div>

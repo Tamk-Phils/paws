@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: "Terms of Service | Ellie's Bichon Frise Sanctuary",
+    description: "Read our terms of service and platform usage guidelines for adopting from Ellie's Bichon Frise Sanctuary.",
+};
+
 export default function TermsPage() {
     return (
         <div className="bg-white min-h-screen">
@@ -74,7 +81,17 @@ export default function TermsPage() {
                         </div>
 
                         <div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-6">5. CONTACT INFORMATION</h2>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-6">5. REFUNDABLE DEPOSITS</h2>
+                            <p className="text-gray-600 mb-4 leading-relaxed">
+                                All security deposits paid to secure a puppy adoption are **refundable**. If you choose not to proceed with the adoption at any time before physical transfer of the animal, you may request a full refund of your deposit.
+                            </p>
+                            <p className="text-gray-600 mb-8 leading-relaxed">
+                                Please contact our support team to initiate a refund request.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-6">6. CONTACT INFORMATION</h2>
                             <p className="text-gray-600 mb-8 leading-relaxed">
                                 In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site, please use our contact form or live chat support.
                             </p>

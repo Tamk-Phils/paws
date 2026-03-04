@@ -120,6 +120,18 @@ export default function UserChat() {
                 if (prev.find(m => m.id === data.id)) return prev;
                 return [...prev, data];
             });
+
+            // Send Push Notification to Admins
+            fetch('/api/push/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    admin: true,
+                    title: '💬 New Message from User',
+                    message: text.slice(0, 100),
+                    url: '/admin/chat'
+                })
+            }).catch(err => console.error('Push notify error:', err));
         }
 
         setSending(false);

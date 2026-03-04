@@ -51,6 +51,20 @@ export default function AdoptionRequests() {
     const handleUpdateStatus = async (id: string, newStatus: string, reqContext: any) => {
         if (newStatus === 'rejected') {
             await adminSupabase.from('adoption_requests').update({ status: 'rejected' }).eq('id', id);
+
+            // Push Notification for Rejection
+            if (reqContext.user_id) {
+                fetch('/api/push/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: reqContext.user_id,
+                        title: 'Application Update',
+                        message: 'Your adoption application status has been updated.',
+                        url: '/profile'
+                    })
+                }).catch(err => console.error('Push notify error:', err));
+            }
             fetchRequests(); // Re-fetch to update UI
         } else if (newStatus === 'approved') {
             // Open the deposit modal instead of direct approval
@@ -100,6 +114,18 @@ export default function AdoptionRequests() {
                     type: 'success'
                 });
                 if (notifError) throw notifError;
+
+                // Also send Push Notification
+                fetch('/api/push/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: selectedRequest.userId,
+                        title: '🎉 Application Approved!',
+                        message: `Your application was approved! Please pay the $${depositAmount} deposit to secure your puppy.`,
+                        url: '/profile'
+                    })
+                }).catch(err => console.error('Push notify error:', err));
             }
 
             setDepositModalOpen(false);
@@ -193,7 +219,9 @@ export default function AdoptionRequests() {
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
-                                                    <h3 className="text-lg font-bold text-gray-900">{req.profiles?.full_name || 'Anonymous Applicant'}</h3>
+                                                    <Link href={`/admin/chat?user=${req.user_id}`} className="hover:opacity-80 transition-opacity">
+                                                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-[var(--color-primary)] transition-colors">{req.profiles?.full_name || 'Anonymous Applicant'}</h3>
+                                                    </Link>
                                                     <div className="text-sm text-gray-500 mt-1 flex flex-col sm:flex-row sm:gap-4">
                                                         <span>{req.profiles?.email || 'No email'}</span>
                                                         <span className="hidden sm:inline">•</span>
@@ -320,7 +348,7 @@ export default function AdoptionRequests() {
                                                     Status Updated
                                                 </button>
                                             )}
-                                            <Link href="/admin/chat" className="w-full bg-[var(--color-secondary)] hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                                            <Link href={`/admin/chat?user=${req.user_id}`} className="w-full bg-[var(--color-secondary)] hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
                                                 <MessageSquare className="w-4 h-4" /> Message Applicant
                                             </Link>
                                         </div>

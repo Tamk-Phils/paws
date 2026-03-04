@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: "Privacy Policy | Ellie's Bichon Frise Sanctuary",
+    description: "Learn how we protect and handle your data at Ellie's Bichon Frise Sanctuary.",
+};
+
 export default function PrivacyPage() {
     return (
         <div className="bg-white min-h-screen">
