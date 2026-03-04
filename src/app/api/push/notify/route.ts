@@ -7,13 +7,15 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-webpush.setVapidDetails(
-    'mailto:pawsomebreed18@gmail.com',
-    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-    process.env.VAPID_PRIVATE_KEY!
-);
-
 export async function POST(req: Request) {
+    // Guard: VAPID keys must be set at request time (not build time)
+    const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+    const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+    if (!vapidPublicKey || !vapidPrivateKey) {
+        return NextResponse.json({ error: 'Push notifications not configured (missing VAPID keys)' }, { status: 500 });
+    }
+    webpush.setVapidDetails('mailto:pawsomebreed18@gmail.com', vapidPublicKey, vapidPrivateKey);
+
     try {
         const { userId, title, message, url, admin } = await req.json();
 
