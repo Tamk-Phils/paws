@@ -56,9 +56,9 @@ export default function AdminChat() {
             }));
             setConversations(enriched);
 
-            // If targetUserId is provided, handle it
+            // If targetUserId is provided, handle it — pass enriched directly to avoid stale state
             if (targetUserId) {
-                await startOrJoinConversation(targetUserId);
+                await startOrJoinConversation(targetUserId, enriched);
             } else if (!activeConvId && enriched.length > 0) {
                 setActiveConvId(enriched[0].id);
             }
@@ -66,9 +66,10 @@ export default function AdminChat() {
         setLoading(false);
     }
 
-    async function startOrJoinConversation(userId: string) {
-        // Find existing conv
-        const existing = conversations.find(c => c.user_id === userId);
+    async function startOrJoinConversation(userId: string, existingConvs?: any[]) {
+        // Use provided list (fresh from fetch) or fall back to state
+        const convList = existingConvs ?? conversations;
+        const existing = convList.find((c: any) => c.user_id === userId);
         if (existing) {
             setActiveConvId(existing.id);
             setShowNewChatSearch(false);
