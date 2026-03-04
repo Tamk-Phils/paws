@@ -87,7 +87,7 @@ export default function BrowsePuppies() {
                                     placeholder="Breed or Name..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] text-sm"
+                                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] text-sm text-black"
                                 />
                                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                             </div>

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { ArrowRight, Heart, PawPrint } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: "About Us | Ellie's Bichon Frise Sanctuary",
-    description: "Learn about our mission, our team, and our commitment to connecting families with incredible Bichon Frise puppies.",
+    title: "About Us | Ellie's Boxer & Rottweiler Sanctuary",
+    description: "Learn about our mission, our team, and our commitment to connecting families with incredible Boxer and Rottweiler puppies.",
 };
 
 const team = [

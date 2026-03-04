@@ -17,21 +17,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Ellie's Bichon Frise Sanctuary | Adopt. Rescue. Love.",
-    template: "%s | Ellie's Bichon Frise Sanctuary"
+    default: "Ellie's Boxer & Rottweiler Sanctuary | Adopt. Rescue. Love.",
+    template: "%s | Ellie's Boxer & Rottweiler Sanctuary"
   },
-  description: "Connecting families with incredible Bichon Frise puppies from trusted individuals and rescues.",
-  keywords: ["Bichon Frise", "puppy adoption", "dog rescue", "Ellie's Bichon Frise Sanctuary", "adopt a puppy"],
+  description: "Connecting families with incredible Boxer and Rottweiler puppies from trusted individuals and rescues.",
+  keywords: ["Boxer", "Rottweiler", "puppy adoption", "dog rescue", "Ellie's Boxer & Rottweiler Sanctuary", "adopt a puppy"],
   openGraph: {
-    title: "Ellie's Bichon Frise Sanctuary",
-    description: "Connecting families with incredible Bichon Frise puppies from trusted individuals and rescues.",
-    siteName: "Ellie's Bichon Frise Sanctuary",
+    title: "Ellie's Boxer & Rottweiler Sanctuary",
+    description: "Connecting families with incredible Boxer and Rottweiler puppies from trusted individuals and rescues.",
+    siteName: "Ellie's Boxer & Rottweiler Sanctuary",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ellie's Bichon Frise Sanctuary",
-    description: "Connecting families with incredible Bichon Frise puppies.",
+    title: "Ellie's Boxer & Rottweiler Sanctuary",
+    description: "Connecting families with incredible Boxer and Rottweiler puppies.",
   }
 };
 

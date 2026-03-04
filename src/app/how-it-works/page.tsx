@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Search, FileText, Heart, MessageCircle, CheckCircle, ArrowRight, Shield, Users, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: "How It Works | Ellie's Bichon Frise Sanctuary",
-    description: "Learn about our seamless and secure adoption process. From browsing verified listings to welcoming your new Bichon Frise puppy home.",
+    title: "How It Works | Ellie's Boxer & Rottweiler Sanctuary",
+    description: "Learn about our seamless and secure adoption process. From browsing verified listings to welcoming your new Boxer or Rottweiler puppy home.",
 };
 
 const steps = [

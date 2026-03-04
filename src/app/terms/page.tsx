@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Terms of Service | Ellie's Bichon Frise Sanctuary",
-    description: "Read our terms of service and platform usage guidelines for adopting from Ellie's Bichon Frise Sanctuary.",
+    title: "Terms of Service | Ellie's Boxer & Rottweiler Sanctuary",
+    description: "Read our terms of service and platform usage guidelines for adopting from Ellie's Boxer & Rottweiler Sanctuary.",
 };
 
 export default function TermsPage() {
